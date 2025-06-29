@@ -1,6 +1,9 @@
-const Profile = () => {
+const Profile = ({ user }) => {
     return(
-        <p>profile</p>
+        <div className="profile">
+            <h1>Perfil</h1>
+            {user && <p className="profile-username">Nombre de usuario: {user.username}</p>}
+        </div>
     );
 }
 

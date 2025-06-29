@@ -1,17 +1,24 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import TweetList from "../components/TweetList";
 import TweetForm from "../components/TweetForm";
 
-const Home = () => {
+const Home = ({ user, logout }) => {
     const [tweets, setTweets] = useState([]);
+    const navigate = useNavigate();;
 
     useEffect(() => {
-        const storedTweets = JSON.parse(localStorage.getItem("tweets")) || [];
-        setTweets(storedTweets);
+        const storedTweets = localStorage.getItem("tweets");
+
+        if(storedTweets){
+            setTweets(JSON.parse(storedTweets) );
+        }
     }, []);
 
     useEffect(() => {
-        localStorage.setItem("tweets", JSON.stringify(tweets));
+        if(tweets.length > 0) {
+            localStorage.setItem("tweets", JSON.stringify(tweets));
+        }
     }, [tweets]);
 
     const addTweet = (text) => {
@@ -33,13 +40,21 @@ const Home = () => {
     };
 
     return (
-        <div>
+        <div className="home">
+            <h1>Bienvenido a Twitter</h1>
+            {user && (
+                <div className="options">
+                    <p className="welcome">Hola, {user}!</p>
+                    <button className="btn-logout" onClick={() => {
+                        navigate('/login');
+                        logout()
+                    }}>Cerrar sesión</button>
+                </div>
+            )}
             <TweetForm onAddTweet={addTweet} />
             <TweetList tweets={tweets} onLike={likeTweet} />
         </div>
-
     );
-
 };
 
 export default Home;

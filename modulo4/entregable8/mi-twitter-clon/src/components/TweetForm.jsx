@@ -16,13 +16,14 @@ const TweetForm = ({ onAddTweet }) => {
     return (
         <form onSubmit={handleSubmit}>
             <input
+                className="input-tweet"
                 type="text"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 placeholder="¿Qué estás pensando?"
             />
 
-            <button type="submit">Tweet</button>
+            <button className="btn-send-tweet" type="submit">Tweet</button>
         </form>
     );
 };

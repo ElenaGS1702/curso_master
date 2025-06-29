@@ -3,28 +3,34 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
+import './App.css'
 
 const App = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Pista: Recuperar información del usuario desde localStorage
+    const username = localStorage.getItem('username');
+    if(username) {
+      setUser(username);
+    }
   }, []);
 
   const login = (username) => {
-    // Pista: Actualizar estado y guardar información en localStorage
+    localStorage.setItem('username', username);
+    setUser(username);
   };
 
   const logout = () => {
-    // Pista: Eliminar información del usuario del estado y localStorage
+    localStorage.removeItem('username');
+    setUser(null);
   };
 
   return (
     <Router>
       <Routes>
         <Route path="/login" element={<Login onLogin={login} />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/" element={<Home user={user}  logout={logout} />} />
+        <Route path="/profile" element={<Profile user={user} />} />
       </Routes>
     </Router>
   );
